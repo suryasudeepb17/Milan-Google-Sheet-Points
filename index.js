@@ -1,3 +1,7 @@
+
+const express = require('express');
+const app = express();
+
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const creds = require('./keys.json');
 
@@ -24,15 +28,26 @@ async function accessSpreadsheet() {
 // read/write row values
 console.log(rows.length);
 await sheet1.loadCells('A1:E10');
-let maj=[];
+
+var maj=[];
 for(let i=0;i<3;i++)
 {
     maj.push(sheet1.getCell(1, i).value)
 }
+a[0]=maj;
 
 console.log(maj);
 }
-
+let a={}
 accessSpreadsheet();
 
+app.get('/' , (req,res)=>{
+  // 200 status code means OK
+  res.send(a); 
+})
+ 
+// Server setup
+app.listen(4000 , ()=>{
+   console.log("server running");
+});
 

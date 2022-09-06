@@ -1,6 +1,10 @@
 
 const express = require('express');
 const app = express();
+var cron = require('node-cron');
+
+const cors = require('cors');
+app.use(cors())
 
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const creds = require('./keys.json');
@@ -82,14 +86,14 @@ console.log(sheet4.title);
 console.log(techy);
 
 await sheet5.loadCells('A1:M5');
-for(let i=4;i<5;i++)
+for(let i=1;i<4;i++)
 {
   var a=[];
   for(let j=1;j<13;j++)
   {
     a.push(sheet5.getCell(i, j).value);
   }
-  leaderboard[1]=a;
+  leaderboard[i]=a;
 }
 console.log(sheet5.title);
 console.log(leaderboard);
@@ -98,6 +102,7 @@ console.log(leaderboard);
 }
 
 accessSpreadsheet();
+
 
 app.get('/sports_boys' , (req,res)=>{
   // 200 status code means OK
@@ -119,7 +124,7 @@ app.get('/leaderboard' , (req,res)=>{
   // 200 status code means OK
   res.send(leaderboard); 
 })
- 
+
 // Server setup
 app.listen(4000 , ()=>{
    console.log("server running");
